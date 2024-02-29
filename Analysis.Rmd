@@ -20,6 +20,7 @@ library(EnsDb.Hsapiens.v86)
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
 ```{r}
+#load data
 
 K27_D15 <- readr::read_delim('gopeaks_Borja/K27_DAneuronD15-1_peaks.bed',
                          col_names = F)
@@ -33,6 +34,8 @@ TF<- readr::read_delim('gopeaks_Borja/TF_DAneuronD15-1_peaks.bed',
 ```
 
 ```{r}
+
+#add the 'chr' character, filter for unknown chromosomes and mutate dbl columns to integer
 
 K27_D15 |> 
   mutate(X1 = paste0('chr', X1)) |> 
