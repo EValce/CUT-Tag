@@ -1,0 +1,69 @@
+---
+title: "BED_conversion"
+author: "Elena"
+date: "2024-02-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r pressure, echo=FALSE}
+library(tidyverse)
+library(dplyr)
+library(AnnotationDbi)
+library(EnsDb.Hsapiens.v86)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r}
+
+K27_D15 <- readr::read_delim('gopeaks_Borja/K27_DAneuronD15-1_peaks.bed',
+                         col_names = F)
+K27_D30 <- readr::read_delim('gopeaks_Borja/K27_DAneuronD30-1_peaks.bed',
+                         col_names = F)
+K27_D30_2 <- readr::read_delim('gopeaks_Borja/K27_DAneuronD30_2-1_peaks.bed',
+                         col_names = F)
+TF<- readr::read_delim('gopeaks_Borja/TF_DAneuronD15-1_peaks.bed',
+                         col_names = F)
+
+```
+
+```{r}
+
+K27_D15 |> 
+  mutate(X1 = paste0('chr', X1)) |> 
+  dplyr::filter(!(str_detect(X1,'\\.'))) |> 
+  mutate(across(c(2,3), as.integer))-> K27_D15
+         
+K27_D30 |> 
+  mutate(X1 = paste0('chr', X1)) |> 
+  dplyr::filter(!(str_detect(X1,'\\.'))) |> 
+  mutate(across(c(2,3), as.integer))-> K27_D30
+
+K27_D30_2 |> 
+  mutate(X1 = paste0('chr', X1)) |> 
+  dplyr::filter(!(str_detect(X1,'\\.'))) |> 
+  mutate(across(c(2,3), as.integer))-> K27_D30_2
+
+TF |> 
+  mutate(X1 = paste0('chr', X1)) |> 
+  filter(!(str_detect(X1,'\\.'))) |> 
+  mutate(across(c(2,3), as.integer)) -> TF
+
+glimpse(TF)
+
+```
+
+```{r}
+
+write.table(K27_D15, file= "BED_files/K27_D15.bed", quote = FALSE, sep = "\t", col.names = FALSE, row.names = FALSE)
+write.table(K27_D30, file= "BED_files/K27_D30.bed", quote = FALSE, sep = "\t", col.names = FALSE, row.names = FALSE)
+write.table(K27_D30_2, file= "BED_files/K27_D30_2.bed", quote = FALSE, sep = "\t", col.names = FALSE, row.names = FALSE)
+write.table(TF, file= "BED_files/TF.bed", quote = FALSE, sep = "\t", col.names = FALSE, row.names = FALSE)
+
+```
+
